@@ -20,6 +20,7 @@ export default async function Main()  {
  })
 
 
+
  if(server){
     return redirect(`/servers/${server.id}`)
  }

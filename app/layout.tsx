@@ -5,6 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { db } from "@/lib/db";
+import  { Toaster } from 'react-hot-toast';
+import CreateServerProvider from "@/components/providers/create-server-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -31,6 +33,8 @@ export default function RootLayout({
             attribute="class"
           >
             {children}
+            <CreateServerProvider/>
+            <Toaster/>
           </ThemeProvider>
         </body>
       </html>

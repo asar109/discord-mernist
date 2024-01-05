@@ -1,13 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogContent,
-} from "../ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,21 +10,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useModal } from "@/hooks/use-modal-store";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import FileUpload from "../file-upload";
 import toast from "react-hot-toast";
+import { z } from "zod";
+import FileUpload from "../file-upload";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
-export const InitialModal = () => {
-  const [isMounted, setIsMounted] = useState(false);
+export const CreateServerModel = () => {
+  const { isOpen, onClose, type } = useModal();
   const router = useRouter();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isModalOpen = isOpen && type === "createServer";
 
   // Create a form schema
   const formSchema = z.object({
@@ -56,6 +54,7 @@ export const InitialModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
+  const { isSubmitting, isValid } = form.formState;
   //  submit handler
 
   const submitHandler = async (values: z.infer<typeof formSchema>) => {
@@ -64,19 +63,20 @@ export const InitialModal = () => {
 
       form.reset();
       router.refresh();
-      window.location.reload();
+      onClose();
       toast.success("Server created successfully");
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (!isMounted) {
-    return null;
-  }
+  const onCloseHandler = () => {
+    form.reset();
+    onClose();
+  };
 
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={onCloseHandler}>
       <DialogContent className="bg-white  p-0 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className="mt-8 text-bold px-6 text-2xl text-center">
@@ -135,7 +135,7 @@ export const InitialModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button type="submit" disabled={isLoading} variant={"primary"}>
+              <Button type="submit" disabled={!isValid} variant={"primary"}>
                 Create
               </Button>
             </DialogFooter>
