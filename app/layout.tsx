@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { db } from "@/lib/db";
 import  { Toaster } from 'react-hot-toast';
-import CreateServerProvider from "@/components/providers/create-server-provider";
+import Modalprovider from "@/components/providers/create-server-provider";
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -34,7 +34,7 @@ export default function RootLayout({
             attribute="class"
           >
             {children}
-            <CreateServerProvider/>
+            <Modalprovider/>
             <Toaster/>
           </ThemeProvider>
         </body>

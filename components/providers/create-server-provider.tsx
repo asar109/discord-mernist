@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { CreateServerModel } from "../modals/create-server-modal";
+import { CreateServerModel } from "@/components/modals/create-server-modal";
+import { InviteModal } from "@/components/modals/invite-modal";
 
-function CreateServerProvider() {
+function ModalProvider() {
   const [isMonted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -13,7 +14,12 @@ function CreateServerProvider() {
     return null;
   }
 
-  return <CreateServerModel />;
+  return (
+    <>
+    <CreateServerModel />
+    <InviteModal/>
+    </>
+  );
 }
 
-export default CreateServerProvider;
+export default ModalProvider;
