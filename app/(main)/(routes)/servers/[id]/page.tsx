@@ -12,14 +12,6 @@ const Server = async ({
 
 
 
-  const server = await db.server.findUnique({
-    where : {
-      id  : params.id
-    }
-  })
-
-
-  console.log(server)
 
   return <div>
    {

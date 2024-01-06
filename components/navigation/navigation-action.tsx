@@ -8,8 +8,8 @@ const NavigationAction = () => {
   const { onOpen } = useModal();
 
   return (
-    <div>
       <ActionTooltip align="center" side="right" message="Add a server">
+ 
         <button
           onClick={() => onOpen("createServer")}
           className="group  flex item-center"
@@ -21,8 +21,8 @@ const NavigationAction = () => {
             />
           </div>
         </button>
+  
       </ActionTooltip>
-    </div>
   );
 };
 
