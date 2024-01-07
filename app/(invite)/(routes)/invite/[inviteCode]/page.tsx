@@ -50,7 +50,14 @@ const Invite = async ({
     },
   });
 
-  return redirect(`/servers/${server.id}`);
+
+
+if(server){
+ return redirect(`/servers/${server.id}`)
+}
+
+
+  return null;
 };
 
 export default Invite;
