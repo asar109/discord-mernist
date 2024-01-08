@@ -1,4 +1,6 @@
 "use client";
+import axios from "axios";
+import qs from "query-string";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,8 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -26,21 +27,32 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
+import { ChannelType } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
-export const CreateServerModel = () => {
+export const CreateChannelModel = () => {
   const { isOpen, onClose, type } = useModal();
   const router = useRouter();
-
-  const isModalOpen = isOpen && type === "createServer";
+  const { id } = useParams();
+  const isModalOpen = isOpen && type === "createChannel";
 
   // Create a form schema
   const formSchema = z.object({
-    name: z.string().min(1, {
-      message: "Please enter a server name",
-    }),
-    imageUrl: z.string().min(1, {
-      message: "Please add an image",
-    }),
+    name: z
+      .string()
+      .min(1, {
+        message: "Channel name is required",
+      })
+      .refine((name) => name !== "general", {
+        message: "Channel name cannot be 'general'",
+      }),
+    type: z.nativeEnum(ChannelType),
   });
 
   //  define the form
@@ -48,23 +60,30 @@ export const CreateServerModel = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      type: "TEXT",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const { isSubmitting, isValid } = form.formState;
+
   //  submit handler
 
   const submitHandler = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      const url = qs.stringifyUrl({
+        url: "/api/channels",
+        query: {
+          serverId: id,
+        },
+      });
 
+      await axios.post(url, values);
       form.reset();
       router.refresh();
       onClose();
-      toast.success("Server created successfully");
+      toast.success("Channel created successfully");
     } catch (error) {
       console.log(error);
     }
@@ -80,14 +99,8 @@ export const CreateServerModel = () => {
       <DialogContent className="bg-white  p-0 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className="mt-8 text-bold px-6 text-2xl text-center">
-            Customize your server
+            Create Channel
           </DialogTitle>
-          <DialogDescription className="text-center">
-            <p className="text-sm text-zinc-500">
-              Give your server a personality with a name and an image You can
-              always change this later
-            </p>
-          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -95,47 +108,61 @@ export const CreateServerModel = () => {
             className="space-y-8"
           >
             <div className="space-y-8 px-6">
-              <div className="flex justify-center items-center text-center">
-                <FormField
-                  name="imageUrl"
-                  control={form.control}
-                  render={({ field }) => (
-                    <>
-                      <FileUpload
-                        endpoint="serverImage"
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </>
-                  )}
-                />
-              </div>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Server name
+                      Channel name
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter the server name"
                         disabled={isLoading}
-                        className="bg-zinc-300/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        placeholder="Enter channel name"
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Channel Type</FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
+                          <SelectValue placeholder="Select a channel type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(ChannelType).map((type) => (
+                          <SelectItem
+                            key={type}
+                            value={type}
+                            className="capitalize"
+                          >
+                            {type.toLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-            <Button  disabled={isSubmitting} type="submit" variant={"primary"}>
+              <Button disabled={isSubmitting} type="submit" variant={"primary"}>
                 Create
               </Button>
             </DialogFooter>

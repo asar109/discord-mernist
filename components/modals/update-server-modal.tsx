@@ -14,6 +14,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -26,7 +27,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import { useEffect } from "react";
 
 export const UpdateServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -46,36 +46,32 @@ export const UpdateServerModal = () => {
     }),
   });
 
- //  define the form
- const form = useForm<z.infer<typeof formSchema>>({
-  resolver: zodResolver(formSchema),
-  defaultValues: {
-    name: "",
-    imageUrl: "",
-  },
-});
-
+  //  define the form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      imageUrl: "",
+    },
+  });
 
   useEffect(() => {
     if (server) {
       form.setValue("name", server.name);
       form.setValue("imageUrl", server.imageUrl);
     }
-  }
-  , [server , form]);
 
-
- 
+  }, [server ,form, isOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isValid } = form.formState;
+
   //  submit handler
 
   const submitHandler = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/servers/${server?.id}/update`, values);
-
       form.reset();
       router.refresh();
       onClose();

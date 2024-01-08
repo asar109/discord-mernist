@@ -56,6 +56,8 @@ export const InitialModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
+  const {isSubmitting} = form.formState
+
   //  submit handler
 
   const submitHandler = async (values: z.infer<typeof formSchema>) => {
@@ -135,7 +137,7 @@ export const InitialModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button type="submit" disabled={isLoading} variant={"primary"}>
+            <Button  disabled={isSubmitting} type="submit" variant={"primary"}>
                 Create
               </Button>
             </DialogFooter>

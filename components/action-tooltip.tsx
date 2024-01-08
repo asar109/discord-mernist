@@ -22,7 +22,7 @@ import {
   }) => {
     return (
         <TooltipProvider>
-        <Tooltip delayDuration={200}>
+        <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
             {children}
           </TooltipTrigger>
