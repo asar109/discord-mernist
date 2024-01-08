@@ -53,6 +53,7 @@ export const MembersModal = () => {
 
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
+      setSelectedId(memberId);
       const query = qs.stringifyUrl({
         url: `/api/members/${memberId}`,
         query: {
@@ -60,14 +61,35 @@ export const MembersModal = () => {
         },
       });
 
-      const res = await axios.patch(query , {
-        role
+      const res = await axios.patch(query, {
+        role,
       });
-
 
       onOpen("members", { server: res.data });
     } catch (error) {
       console.log("MembersModal -> error", error);
+    } finally {
+      setSelectedId(null);
+    }
+  };
+
+  const onKickHandler = async (memberId: string) => {
+    try {
+      setSelectedId(memberId);
+      const query = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+
+      const res = await axios.delete(query);
+
+      onOpen("members", { server: res.data });
+    } catch (error) {
+      console.log("MembersModal -> error", error);
+    } finally {
+      setSelectedId(null);
     }
   };
 
@@ -76,7 +98,7 @@ export const MembersModal = () => {
       <DialogContent className="bg-white  p-5 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className=" font-bold tracking-wide capitalize px-6 text-2xl text-center">
-           Manage Members
+            Manage Members
           </DialogTitle>
           <DialogDescription className="text-center  text-zinc-500 text-base font-semibold ">
             {server?.members.length > 1 ? (
@@ -133,9 +155,9 @@ export const MembersModal = () => {
                                   )}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
-                                onClick={() =>
-                                  onRoleChange(member.id, "MODERATOR")
-                                }
+                                  onClick={() =>
+                                    onRoleChange(member.id, "MODERATOR")
+                                  }
                                 >
                                   <ShieldCheck className="mr-1" /> Moderator{" "}
                                   {member.role === "MODERATOR" && (
@@ -147,7 +169,9 @@ export const MembersModal = () => {
                           </DropdownMenuSub>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => onKickHandler(member.id)}
+                        >
                           <Gavel className="h-4 w-4 mr-1" />
                           Kick
                         </DropdownMenuItem>
@@ -157,7 +181,7 @@ export const MembersModal = () => {
                 ) : null}
               </div>
               {selectedId === member.id ? (
-                <Loader2 className="animate-spin text-zinc-500 " />
+                <Loader2 className="animate-spin ml-auto text-zinc-500 " />
               ) : null}
             </div>
           ))}
