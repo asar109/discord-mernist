@@ -37,13 +37,8 @@ import { MemberRole } from "@prisma/client";
 import qs from "query-string";
 import axios from "axios";
 
-
-
-
-
-
 export const MembersModal = () => {
-  const { isOpen, onClose, type, data ,onOpen } = useModal();
+  const { isOpen, onClose, type, data, onOpen } = useModal();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const roleIconMap = {
@@ -56,38 +51,32 @@ export const MembersModal = () => {
 
   const { server } = data as { server: ServerWithMembersWithProfiles };
 
+  const onRoleChange = async (memberId: string, role: MemberRole) => {
+    try {
+      const query = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+
+      const res = await axios.patch(query , {
+        role
+      });
 
 
-
-  const onRoleChange = async (memberId  : string , role : MemberRole)=>{
-
-    const query = qs.stringifyUrl({
-      url : `/api/member/${memberId}`,
-      query : {
-        serverId : server?.id,
-        role 
-      }
-    })
-
-
-  const res =  await axios.patch(query)
-
-
-onOpen('members' , {server : server})
-
-
-
-
-
-  }
-
+      onOpen("members", { server: res.data });
+    } catch (error) {
+      console.log("MembersModal -> error", error);
+    }
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white  p-5 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className=" font-bold tracking-wide capitalize px-6 text-2xl text-center">
-            Invite friends
+           Manage Members
           </DialogTitle>
           <DialogDescription className="text-center  text-zinc-500 text-base font-semibold ">
             {server?.members.length > 1 ? (
@@ -115,47 +104,57 @@ onOpen('members' , {server : server})
                 </div>
               </div>
               <div className="ml-auto">
-             {
-              selectedId !== member.id && member.role !== MemberRole.ADMIN  ? (<>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <MoreVertical className="h-4 w-4 hover:cursor-pointer" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent side="right" className="w-30 md:w-42">
-                    <DropdownMenuGroup>
-                      <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                          <ShieldQuestion className="mr-1" /> Role
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                          <DropdownMenuSubContent className="ml-1">
-                            <DropdownMenuItem
-                            onClick={()=>onRoleChange(member.id , 'GUEST')}
-                            > 
-                              <Shield className="mr-1" /> Guest{" "}
-                              {member.role === "GUEST" && (
-                                <Check className="ml-auto" />
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <ShieldCheck className="mr-1" /> Moderator{" "}
-                              {member.role === "MODERATOR" && (
-                                <Check className="ml-auto" />
-                              )}
-                            </DropdownMenuItem>
-                          </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                      </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem  >
-                      <Gavel className="h-4 w-4 mr-1" />
-                      Kick
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>) : null
-             }
+                {selectedId !== member.id &&
+                member.role !== MemberRole.ADMIN ? (
+                  <>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <MoreVertical className="h-4 w-4 hover:cursor-pointer" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        side="right"
+                        className="w-32 md:w-42"
+                      >
+                        <DropdownMenuGroup>
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                              <ShieldQuestion className="mr-1" /> Role
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent className="ml-1">
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    onRoleChange(member.id, "GUEST")
+                                  }
+                                >
+                                  <Shield className="mr-1" /> Guest{" "}
+                                  {member.role === "GUEST" && (
+                                    <Check className="ml-auto" />
+                                  )}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                onClick={() =>
+                                  onRoleChange(member.id, "MODERATOR")
+                                }
+                                >
+                                  <ShieldCheck className="mr-1" /> Moderator{" "}
+                                  {member.role === "MODERATOR" && (
+                                    <Check className="ml-auto" />
+                                  )}
+                                </DropdownMenuItem>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          <Gavel className="h-4 w-4 mr-1" />
+                          Kick
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                ) : null}
               </div>
               {selectedId === member.id ? (
                 <Loader2 className="animate-spin text-zinc-500 " />
