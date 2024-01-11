@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,13 +23,15 @@ export const DeleteServerModal = () => {
 
   const { server } = data;
 
+  useEffect(() => {}, [isLoading]);
+
   const deleteHandler = async () => {
     try {
       setIsLoading(true);
       await axios.delete(`/api/servers/${server?.id}`);
       onClose();
       router.refresh();
-      router.push('/')
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,14 +47,10 @@ export const DeleteServerModal = () => {
             Invite friends
           </DialogTitle>
           <DialogDescription className="text-zinc-500 text-sm flex justify-center items-center flex-col">
+            <p>Are you sure you want to do it? </p>
             <p>
-              Are you sure you want to do it?{" "}
-            
-              
-            </p>
-            <p>
-            <span className="text-indigo-500  font-bold">{server?.name}</span>{" "}
-            Server will be deleted permanently.
+              <span className="text-indigo-500  font-bold">{server?.name}</span>{" "}
+              Server will be deleted permanently.
             </p>
           </DialogDescription>
         </DialogHeader>
