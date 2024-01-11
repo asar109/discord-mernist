@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import ActionTooltip from "../action-tooltip";
+import { useEffect } from "react";
 
 interface NavigationItemProps {
   id: string;
@@ -19,6 +20,7 @@ export const NavigationItem = ({ id, imageUrl, name }: NavigationItemProps) => {
   const onClick = () => {
     router.push(`/servers/${id}`);
   };
+
 
   return (
     <ActionTooltip side="right" align="center" message={name}>

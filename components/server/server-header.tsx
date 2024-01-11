@@ -1,14 +1,14 @@
 "use client";
-import { ServerWithMembersWithProfiles } from "@/types";
-import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { useModal } from "@/hooks/use-modal-store";
+import { ServerWithMembersWithProfiles } from "@/types";
+import { MemberRole } from "@prisma/client";
 import {
   ChevronDown,
   LogOut,
@@ -18,8 +18,6 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { MemberRole } from "@prisma/client";
-import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -31,6 +29,8 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
   const isModerator = isAdmin || role ===  MemberRole.MODERATOR;
 
   const {  onOpen ,data  } = useModal();
+
+  
 
 
   return (
@@ -51,7 +51,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
           )}
 
           {isAdmin && (
-            <DropdownMenuItem onClick={()=>onOpen('serverSetting' , {server})} className="px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem  onClick={()=>onOpen('serverSetting' , {server})} className="px-3 py-2 text-sm cursor-pointer">
               Server settings
               <Settings className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
@@ -76,8 +76,8 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             </DropdownMenuItem>
           )}
           {!isAdmin && (
-            <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer ">
-              Leave channel
+            <DropdownMenuItem onClick={()=>onOpen('leaveServer' , {server})} className="px-3 py-2 text-sm dark:hover:bg-destructive/90 cursor-pointer ">
+              Leave Server
               <LogOut className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
