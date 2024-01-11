@@ -75,7 +75,7 @@ export const InviteModal = () => {
             disabled={isLoading}
             className="w-full px-4 text-sm font-normal text-gray-800  bg-gray-200  transition border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-0"
           />
-          <Button disabled={isLoading} onClick={copyHandler} size={"icon"}>
+          <Button disabled={isLoading} variant={'ghost'} className="ml-2 dark:hover:bg-gray-500" onClick={copyHandler} size={"icon"}>
             {copied ? (
               <Check className="w-4 h-4" color="black" />
             ) : (

@@ -13,23 +13,23 @@ import {
 
 import axios from "axios";
 
-export const LeaveServerModal = () => {
+export const DeleteServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const isModalOpen = isOpen && type === "leaveServer";
+  const isModalOpen = isOpen && type === "deleteServer";
 
   const router = useRouter();
 
   const { server } = data;
 
-  const leaveHandler = async () => {
+  const deleteHandler = async () => {
     try {
       setIsLoading(true);
-      await axios.patch(`/api/servers/${server?.id}/leave`);
+      await axios.delete(`/api/servers/${server?.id}`);
       onClose();
       router.refresh();
-      router.push("/");
+      router.push('/')
     } catch (error) {
       console.log(error);
     } finally {
@@ -42,13 +42,17 @@ export const LeaveServerModal = () => {
       <DialogContent className="bg-white  p-5 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className="mb-8 font-bold tracking-wide capitalize px-6 text-2xl text-center">
-            Leave Server
+            Invite friends
           </DialogTitle>
-          <DialogDescription className="text-zinc-500 text-sm">
+          <DialogDescription className="text-zinc-500 text-sm flex justify-center items-center flex-col">
             <p>
-              Are you sure you want to leave{" "}
-              <span className="text-indigo-500  font-bold">{server?.name}</span>{" "}
-              ?
+              Are you sure you want to do it?{" "}
+            
+              
+            </p>
+            <p>
+            <span className="text-indigo-500  font-bold">{server?.name}</span>{" "}
+            Server will be deleted permanently.
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -65,9 +69,9 @@ export const LeaveServerModal = () => {
             className="w-full"
             disabled={isLoading}
             variant="destructive"
-            onClick={() => leaveHandler()}
+            onClick={() => deleteHandler()}
           >
-            Leave
+            Confirm
           </Button>
         </div>
       </DialogContent>
