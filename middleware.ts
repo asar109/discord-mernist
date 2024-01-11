@@ -11,8 +11,3 @@ export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };
  
-
-
-
-// something new
-// something new

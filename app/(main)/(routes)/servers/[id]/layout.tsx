@@ -2,6 +2,7 @@ import ServerSidebar from "@/components/server/server-sidebar";
 import { currentProfile } from "@/lib/currentProfile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
 const layout = async ({
@@ -27,6 +28,11 @@ const layout = async ({
       }
     },
   });
+
+
+  if (!server) {
+    return redirect("/");
+  }
 
   return (
     <div className="h-full">
