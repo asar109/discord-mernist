@@ -4,7 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
 import { ServerWithMembersWithProfiles } from "@/types";
@@ -26,12 +26,9 @@ interface ServerHeaderProps {
 
 export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
   const isAdmin = role === MemberRole.ADMIN;
-  const isModerator = isAdmin || role ===  MemberRole.MODERATOR;
+  const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
-  const {  onOpen ,data  } = useModal();
-
-  
-
+  const { onOpen, data } = useModal();
 
   return (
     <DropdownMenu>
@@ -44,44 +41,61 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       <DropdownMenuContent className="border-0">
         <div className="w-56 text-xs font-medium text-black dark:text-neutral-200 transition  ">
           {isModerator && (
-            <DropdownMenuItem onClick={()=>onOpen('invite' , {server})} className="px-3 py-2 text-sm cursor-pointer text-indigo-600 dark:text-indigo-400">
+            <DropdownMenuItem
+              onClick={() => onOpen("invite", { server })}
+              className="px-3 py-2 text-sm cursor-pointer text-indigo-600 dark:text-indigo-400"
+            >
               Invite People
               <UserPlus className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
 
           {isAdmin && (
-            <DropdownMenuItem  onClick={()=>onOpen('serverSetting' , {server})} className="px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => onOpen("serverSetting", { server })}
+              className="px-3 py-2 text-sm cursor-pointer"
+            >
               Server settings
               <Settings className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
           {isAdmin && (
-            <DropdownMenuItem onClick={()=>onOpen('members' , {server})} className="px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => onOpen("members", { server })}
+              className="px-3 py-2 text-sm cursor-pointer"
+            >
               Manage members
               <Users className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
           {isModerator && (
-            <DropdownMenuItem onClick={()=>onOpen('createChannel')} className="px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => onOpen("createChannel")}
+              className="px-3 py-2 text-sm cursor-pointer"
+            >
               Create channel
               <PlusCircle className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
           {isModerator && <DropdownMenuSeparator />}
           {isAdmin && (
-            <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer text-rose-400 ">
+            <DropdownMenuItem
+              onClick={() => onOpen("deleteServer", { server })}
+              className="px-3 py-2 text-sm cursor-pointer text-rose-400 "
+            >
               Delete Server
               <Trash className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
           {!isAdmin && (
-            <DropdownMenuItem onClick={()=>onOpen('leaveServer' , {server})} className="px-3 py-2 text-sm dark:hover:bg-destructive/90 cursor-pointer ">
+            <DropdownMenuItem
+              onClick={() => onOpen("leaveServer", { server })}
+              className="px-3 py-2 text-sm dark:hover:bg-destructive/90 cursor-pointer "
+            >
               Leave Server
               <LogOut className="w-4 h-4 ml-auto" />
             </DropdownMenuItem>
           )}
-
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
