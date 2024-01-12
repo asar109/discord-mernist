@@ -4,7 +4,7 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem
+  CommandItem,
 } from "@/components/ui/command";
 import { Search } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -41,21 +41,22 @@ function ServerSearch({ data }: ServerSearchProps) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const onClickHandler = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "channel" | "member";
+  }) => {
+    setOpen(false);
 
-
-  const onClickHandler = ({id , type} :  {id : string , type :  "channel" | "member"})=>{
-    setOpen(false)
-
-    if(type === "channel"){
-    return   router.push(`/servers/${params?.id}/channels/${id}`)
-  
+    if (type === "channel") {
+      return router.push(`/servers/${params?.id}/channels/${id}`);
     }
-    if(type === "member"){
-      return router.push(`/servers/${params?.id}/conversations/${id}`)
+    if (type === "member") {
+      return router.push(`/servers/${params?.id}/conversations/${id}`);
     }
-    
-  }
-
+  };
 
   return (
     <>
@@ -77,21 +78,23 @@ function ServerSearch({ data }: ServerSearchProps) {
           <CommandInput placeholder="Search all channels and members" />
           <CommandEmpty>No result found</CommandEmpty>
           <ScrollArea className="h-72">
-          {data?.map(({ data, type, label }) => {
-            if (!data?.length) return null;
-            return (
-              <CommandGroup key={label} heading={label}>
-                {data.map(({ name, id, icon }) => (
-                  <>
-                    <CommandItem className="hover:cursor-pointer" key={id}  onSelect={()=>onClickHandler({id , type})} >
+            {data?.map(({ data, type, label }, index) => {
+              if (!data?.length) return null;
+              return (
+                <CommandGroup key={index} heading={label}>
+                  {data.map(({ name, id, icon }) => (
+                    <CommandItem
+                      className="hover:cursor-pointer"
+                      key={id}
+                      onSelect={() => onClickHandler({ id, type })}
+                    >
                       <span>{icon}</span>
                       {name}
                     </CommandItem>
-                  </>
-                ))}
-              </CommandGroup>
-            );
-          })}
+                  ))}
+                </CommandGroup>
+              );
+            })}
           </ScrollArea>
         </CommandDialog>
       </div>

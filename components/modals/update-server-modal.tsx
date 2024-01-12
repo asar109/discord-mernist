@@ -61,7 +61,7 @@ export const UpdateServerModal = () => {
       form.setValue("imageUrl", server.imageUrl);
     }
 
-  }, [server ,form, isOpen]);
+  }, [server ,form]);
 
   const isLoading = form.formState.isSubmitting;
 

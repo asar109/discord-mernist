@@ -7,6 +7,7 @@ import { MembersModal } from "@/components/modals/members-modal";
 import { CreateChannelModel } from "@/components/modals/create-channel-modal";
 import { LeaveServerModal } from "@/components/modals/leave-server-modal";
 import { DeleteServerModal } from "@/components/modals/delete-server-modal";
+import { DeleteChannelModal } from "@/components/modals/delete-channel-modal";
 
 function ModalProvider() {
   const [isMonted, setIsMounted] = useState<boolean>(false);
@@ -24,8 +25,9 @@ function ModalProvider() {
       <CreateServerModel />
       <UpdateServerModal />
       <LeaveServerModal/>
-      <CreateChannelModel/>
       <DeleteServerModal/>
+      <CreateChannelModel/>
+      <DeleteChannelModal/>
       <InviteModal />
       <MembersModal />
     </>
