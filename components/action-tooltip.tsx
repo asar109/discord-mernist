@@ -17,7 +17,7 @@ import {
   } : {
     children : ReactNode,
     message : string,
-    side : 'bottom'| 'top' | 'left' | 'right' ,
+    side? : 'bottom'| 'top' | 'left' | 'right' ,
     align : 'start' | 'center' | 'end'
   }) => {
     return (
