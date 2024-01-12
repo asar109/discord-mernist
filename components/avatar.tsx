@@ -10,7 +10,7 @@ interface AvatarComponentProps {
 const AvatarComponent = ({ src, classNames }: AvatarComponentProps) => {
   return (
     <Avatar>
-      <AvatarImage className={cn("", classNames)} src={src} />
+      <AvatarImage  className={cn("", classNames)} src={src} />
       <AvatarFallback>
         <Loader2 className="animate-spin " />
       </AvatarFallback>
