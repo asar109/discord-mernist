@@ -9,6 +9,7 @@ import {
 import { Search } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ServerSearchProps {
   data: {
@@ -46,11 +47,11 @@ function ServerSearch({ data }: ServerSearchProps) {
     setOpen(false)
 
     if(type === "channel"){
-      router.push(`/servers/${params.id}/channels/${id}`)
+    return   router.push(`/servers/${params?.id}/channels/${id}`)
   
     }
     if(type === "member"){
-      router.push(`/servers/${params.id}/conversations/${id}`)
+      return router.push(`/servers/${params?.id}/conversations/${id}`)
     }
     
   }
@@ -75,6 +76,7 @@ function ServerSearch({ data }: ServerSearchProps) {
         <CommandDialog open={open} onOpenChange={setOpen}>
           <CommandInput placeholder="Search all channels and members" />
           <CommandEmpty>No result found</CommandEmpty>
+          <ScrollArea className="h-72">
           {data?.map(({ data, type, label }) => {
             if (!data?.length) return null;
             return (
@@ -90,6 +92,7 @@ function ServerSearch({ data }: ServerSearchProps) {
               </CommandGroup>
             );
           })}
+          </ScrollArea>
         </CommandDialog>
       </div>
     </>
