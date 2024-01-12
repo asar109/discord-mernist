@@ -28,7 +28,8 @@ export const DeleteChannelModal = () => {
   const deleteHandler = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/channels/${channel?.id}`);
+
+      await axios.delete(`/api/channels/${channel?.id}/${server?.id}`);
       onClose();
       router.refresh();
       setIsLoading(false);
@@ -52,7 +53,7 @@ export const DeleteChannelModal = () => {
               <span className="text-indigo-500  font-bold">
                 {channel?.name}
               </span>{" "}
-              channel will be deleted permanently.
+              channel will be deleted permanently
             </p>
           </DialogDescription>
         </DialogHeader>
