@@ -13,22 +13,22 @@ import {
 
 import axios from "axios";
 
-export const DeleteServerModal = () => {
+export const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const isModalOpen = isOpen && type === "deleteServer";
+  const isModalOpen = isOpen && type === "deleteChannel";
 
   const router = useRouter();
 
-  const { server } = data;
+  const { server, channel } = data;
 
   useEffect(() => {}, [isLoading]);
 
   const deleteHandler = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/servers/${server?.id}`);
+      await axios.delete(`/api/channels/${channel?.id}`);
       onClose();
       router.refresh();
       setIsLoading(false);
@@ -44,13 +44,15 @@ export const DeleteServerModal = () => {
       <DialogContent className="bg-white  p-5 text-black overflow-hidden">
         <DialogHeader className="text-center">
           <DialogTitle className="mb-8 font-bold tracking-wide capitalize px-6 text-2xl text-center">
-            Delete server
+            Delete Channel
           </DialogTitle>
           <DialogDescription className="text-zinc-500 text-sm flex justify-center items-center flex-col">
             <p>Are you sure you want to do it? </p>
             <p>
-              <span className="text-indigo-500  font-bold">{server?.name}</span>{" "}
-              Server will be deleted permanently.
+              <span className="text-indigo-500  font-bold">
+                {channel?.name}
+              </span>{" "}
+              channel will be deleted permanently.
             </p>
           </DialogDescription>
         </DialogHeader>

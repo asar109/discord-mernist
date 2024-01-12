@@ -82,7 +82,7 @@ const ServerSidebar = async ({ serverId }: ServersidebarProps) => {
     <div className="w-full flex-col text-primary dark:bg-[#2b2d31] bg-[#f2f3f5]  h-full">
       <ServerHeader server={server} role={role} />
 
-      <ScrollArea   className="h-full rounded-md p-4">
+      <ScrollArea   className="h-5/6 rounded-md p-4">
         <div className="mt-2">
           <ServerSearch
             data={[
