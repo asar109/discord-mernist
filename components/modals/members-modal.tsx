@@ -1,22 +1,5 @@
 "use client";
-import { useModal } from "@/hooks/use-modal-store";
-import {
-  Check,
-  Gavel,
-  Loader2,
-  MoreVertical,
-  Shield,
-  ShieldAlert,
-  ShieldCheck,
-  ShieldQuestion,
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+import AvatarComponent from "@/components/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,17 +12,36 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import AvatarComponent from "@/components/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useModal } from "@/hooks/use-modal-store";
 import { ServerWithMembersWithProfiles } from "@/types";
-import { useState } from "react";
 import { MemberRole } from "@prisma/client";
-import qs from "query-string";
 import axios from "axios";
+import {
+  Check,
+  Gavel,
+  Loader2,
+  MoreVertical,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import qs from "query-string";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
 export const MembersModal = () => {
   const { isOpen, onClose, type, data, onOpen } = useModal();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const router = useRouter();
 
   const roleIconMap = {
     GUEST: null,
@@ -65,6 +67,8 @@ export const MembersModal = () => {
         role,
       });
 
+      router.refresh();
+
       onOpen("members", { server: res.data });
     } catch (error) {
       console.log("MembersModal -> error", error);
@@ -84,6 +88,8 @@ export const MembersModal = () => {
       });
 
       const res = await axios.delete(query);
+
+      router.refresh();
 
       onOpen("members", { server: res.data });
     } catch (error) {
@@ -112,7 +118,7 @@ export const MembersModal = () => {
           {server?.members.map((member) => (
             <div key={member.id} className="flex items-center mb-3  gap-x-2">
               <AvatarComponent src={member.profile.imageUrl} />
-              <div  className="flex items-start flex-col ">
+              <div className="flex items-start flex-col ">
                 <div className="flex items-center text-lg font-semibold  gap-x-1">
                   {member?.profile?.name}{" "}
                   {
