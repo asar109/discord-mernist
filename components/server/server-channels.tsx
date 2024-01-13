@@ -37,7 +37,7 @@ export const ServerChannel = ({
 
     const onAction = (e: React.MouseEvent, action: Modaltype) => {
       e.stopPropagation();
-      onOpen(action, { server , channel });
+      onOpen(action, { server , channel ,channelType: channel.type});
     };
 
   return (
