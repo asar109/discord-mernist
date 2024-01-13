@@ -35,7 +35,7 @@ import {
 } from "../ui/select";
 
 export const UpdateChannelModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data }  = useModal();
   const { channel, channelType } = data;
   const router = useRouter();
   const { id } = useParams();
@@ -54,21 +54,21 @@ export const UpdateChannelModal = () => {
     type: z.nativeEnum(ChannelType),
   });
 
-  //  define the form
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType || ChannelType.TEXT,
-    },
+      type: channel?.type || ChannelType.TEXT,
+    }
   });
 
   useEffect(() => {
-    if (channel) {
-      form.setValue("name", channel?.name);
-      form.setValue("type", channel?.type);
-    }
-  }, [channelType, channel]);
+   if (channel) {
+    form.setValue("name", channel?.name);
+    form.setValue("type", channel?.type);
+   }
+  }, [form, channel , isOpen]);
+
 
   const isLoading = form.formState.isSubmitting;
 
