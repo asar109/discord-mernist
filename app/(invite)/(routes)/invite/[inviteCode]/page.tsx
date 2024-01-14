@@ -29,7 +29,7 @@ const Invite = async ({
     });
 
     if (!serverExist) {
-      return redirect("/"); 
+      return redirect("/");
     }
 
     const alreadyMember = await db.server.findFirst({
@@ -68,7 +68,7 @@ const Invite = async ({
     return null;
   } catch (error) {
     console.error("Error processing invite:", error);
-    return redirect("/"); 
+    return redirect("/");
   }
 };
 
