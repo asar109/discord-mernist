@@ -4,15 +4,14 @@ import { useSocket } from "./providers/socket-provider";
 import { Badge } from "./ui/badge";
 
 const SocketIndicator = () => {
-  const { isConnected } = useSocket();
-
+  const { isConnected  , socket} = useSocket();
   if (!isConnected) {
     return (
       <Badge
         variant={"outline"}
         className="bg-yellow-600 text-sm  text-white border-0"
       >
-        Offline
+       Offline 
       </Badge>
     );
   }
@@ -23,7 +22,7 @@ const SocketIndicator = () => {
         variant={"outline"}
         className="bg-emerald-600 text-sm  text-white border-0"
       >
-        online
+        Live: Real time update
       </Badge>
     );
   }
