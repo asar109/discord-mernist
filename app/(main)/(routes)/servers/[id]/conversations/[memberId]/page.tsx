@@ -39,11 +39,14 @@ const Page = async ({ params }: Props) => {
   );
 
 
+
   if(!conversation){
-    return redirect('/')
+    return redirect(`/servers/${params.id}`);
   }
 
-  const otherProfile = conversation.memberOneId !== currentMember.id ?  conversation.memberOne.profile : conversation.memberTwo.profile
+  const {memberOne , memberTwo} = conversation
+
+  const otherProfile = conversation.memberOneId !== currentMember.id ?  memberOne.profile : memberTwo.profile
 
   return (
 
