@@ -15,7 +15,6 @@ const message = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const profile = await currentProfilePages(req);
     const {channelId , serverId} = req.query
     const {content , fileUrl} = req.body
-
     if (!profile) return res.status(401).json({ error: "Unauthorized" });
     if (!channelId) return res.status(400).json({ error: "Channel ID Missing" });
     if (!serverId) return res.status(400).json({ error: "Server ID Missing" });

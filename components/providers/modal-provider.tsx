@@ -9,6 +9,7 @@ import { LeaveServerModal } from "@/components/modals/leave-server-modal";
 import { DeleteServerModal } from "@/components/modals/delete-server-modal";
 import { DeleteChannelModal } from "@/components/modals/delete-channel-modal";
 import { UpdateChannelModal } from "@/components/modals/update-channel-modal";
+import { SendFileUrl } from "@/components/modals/send-file-modal";
 
 function ModalProvider() {
   const [isMonted, setIsMounted] = useState<boolean>(false);
@@ -32,6 +33,7 @@ function ModalProvider() {
       <DeleteChannelModal/>
       <InviteModal />
       <MembersModal />
+      <SendFileUrl/>
     </>
   );
 }
