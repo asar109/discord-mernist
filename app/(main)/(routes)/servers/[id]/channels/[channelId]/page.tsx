@@ -46,8 +46,8 @@ const Page = async ({
       name="channel"
       type="channel"
       apiUrl="/api/socket/message"
-      query={{ channelId  , serverId }}
-      
+      query={{ channelId  , serverId  }}
+
       />
     </div>
   );
