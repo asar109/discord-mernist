@@ -1,17 +1,16 @@
 "use client";
 
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Smile } from "lucide-react";
-import { useRouter } from "next/navigation";
+import * as z from "zod";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
-import { cn } from "@/lib/utils";
 import ChatEmojies from "./chat-emojies";
 
 interface ChatInputProps {
@@ -78,7 +77,11 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                     {...field}
                   />
                   <div className="absolute top-7 right-8">
-                   <ChatEmojies onChange={(emoji : string)=>field.onChange(`${field.value} ${emoji} `)} />
+                    <ChatEmojies
+                      onChange={(emoji: string) =>
+                        field.onChange(`${field.value} ${emoji} `)
+                      }
+                    />
                   </div>
                 </div>
               </FormControl>
