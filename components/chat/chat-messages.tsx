@@ -1,5 +1,4 @@
-'use client'
-
+"use client"
 import { Member } from "@prisma/client";
 import React from "react";
 import ChatWelcome from "./chat-welcome";
