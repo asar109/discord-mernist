@@ -1,12 +1,12 @@
-import { currentProfile } from "@/lib/currentProfile";
-import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
 import NavigationAction from "@/components/navigation/navigation-action";
-import { Separator } from "@/components/ui/separator";
 import { NavigationItem } from "@/components/navigation/navigation-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ModeToggle } from "../mode-toggle";
+import { Separator } from "@/components/ui/separator";
+import { currentProfile } from "@/lib/currentProfile";
+import { db } from "@/lib/db";
 import { UserButton } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { ModeToggle } from "../mode-toggle";
 
 const NavigationSidebar = async () => {
   const profile = await currentProfile();
@@ -24,7 +24,6 @@ const NavigationSidebar = async () => {
       },
     },
   });
-
 
   return (
     <div className="w-full h-full  items-center space-y-4  py-3 flex flex-col text-primary  dark:bg-[#1E1F22]">

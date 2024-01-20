@@ -11,6 +11,7 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
+import { cn } from "@/lib/utils";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -42,13 +43,12 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
       });
       await axios.post(url, values);
       form.reset();
-      router.refresh();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const { isSubmitting } = form.formState;
+  const { isSubmitting , } = form.formState;
 
   return (
     <Form {...form}>
@@ -69,7 +69,7 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                   </button>
                   <Input
                     disabled={isSubmitting}
-                    className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                    className={cn("px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200", isSubmitting && "cursor-not-allowed")}
                     placeholder={`Message ${
                       type === "conversation" ? name : "#" + name
                     }`}

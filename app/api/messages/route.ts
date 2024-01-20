@@ -4,7 +4,7 @@ import { Message } from "@prisma/client";
 import { currentProfile } from "@/lib/currentProfile";
 import { db } from "@/lib/db";
 
-const MESSAGES_BATCH = 10;
+const MESSAGES_BATCH = 30;
 
 export async function GET(
   req: Request
@@ -15,6 +15,7 @@ export async function GET(
 
     const cursor = searchParams.get("cursor");
     const channelId = searchParams.get("channelId");
+
 
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
