@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import ActionTooltip from "../action-tooltip";
-import { useEffect } from "react";
 
 interface NavigationItemProps {
   id: string;
@@ -20,7 +19,6 @@ export const NavigationItem = ({ id, imageUrl, name }: NavigationItemProps) => {
   const onClick = () => {
     router.push(`/servers/${id}`);
   };
-
 
   return (
     <ActionTooltip side="right" align="center" message={name}>
@@ -38,7 +36,7 @@ export const NavigationItem = ({ id, imageUrl, name }: NavigationItemProps) => {
             params?.id === id && "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
-          <Image   fill src={imageUrl} alt={name} />
+          <Image fill src={imageUrl} alt={name} />
         </div>
       </button>
     </ActionTooltip>
