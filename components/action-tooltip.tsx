@@ -18,7 +18,7 @@ import {
     children : ReactNode,
     message : string,
     side? : 'bottom'| 'top' | 'left' | 'right' ,
-    align : 'start' | 'center' | 'end'
+    align? : 'start' | 'center' | 'end'
   }) => {
     return (
         <TooltipProvider>
