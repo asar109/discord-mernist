@@ -12,7 +12,7 @@ interface Props {
 
 function ChatHeader({ serverId, type, imageUrl, name }: Props) {
   return (
-    <div className="bg-white dark:bg-[#2b2d31]  px-2 flex items-center dark:border-neutral-800  font-semibold text-md h-12 border-b ">
+    <div className="bg-white dark:bg-[#2b2d31]  px-2 flex items-center dark:border-neutral-800  font-semibold text-md min-h-12 border-b ">
       <MobileToggle serverId={serverId} />
       {imageUrl && <AvatarComponent classNames="w-8 h-8 mr-1" src={imageUrl} />}
 
