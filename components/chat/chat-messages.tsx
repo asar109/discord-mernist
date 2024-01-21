@@ -35,7 +35,7 @@ const ChatMessages = ({
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
-  const updateKey = `chat:${chatId}:update-message`;
+  const updateKey = `chat:${chatId}:messages:update`;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
