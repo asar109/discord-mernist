@@ -86,7 +86,7 @@ const ChatMessages = ({
   }
 
   return (
-    <div ref={chatRef} className="flex-1 flex flex-col overflow-y-scroll  ">
+    <div ref={chatRef} className="flex-1  pt-4 flex flex-col overflow-y-scroll  ">
       {!hasNextPage && <div className="flex-1 " />}
       {!hasNextPage && <ChatWelcome name={name} type={type} />}
 
