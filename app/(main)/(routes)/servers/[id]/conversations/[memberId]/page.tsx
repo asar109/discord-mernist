@@ -59,21 +59,20 @@ const Page = async ({ params }: Props) => {
         type="conversation"
         imageUrl={otherProfile.imageUrl}
       />
-
       <ChatMessages
-      type="conversation"
-      chatId={conversation.id}
-      name={otherProfile.name}
-      paramKey='conversationId'
-      paramValue={conversation.id}
-      apiUrl="/api/direct-messages"
-      socketUrl="/api/socket/direct-message"
-      socketQuery={{ conversationId: conversation.id }}
-      member={currentMember}
+        type="conversation"
+        chatId={conversation.id}
+        name={otherProfile.name}
+        paramKey="conversationId"
+        paramValue={conversation.id}
+        apiUrl="/api/direct-messages"
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{ conversationId: conversation.id }}
+        member={currentMember}
       />
       <ChatInput
         name={otherProfile.name}
-        apiUrl="/api/socket/direct-message"
+        apiUrl="/api/socket/direct-messages"
         query={{ conversationId: conversation.id }}
         type="conversation"
       />
