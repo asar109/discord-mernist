@@ -65,10 +65,10 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col">
-      <div className="flex-1 overflow-y-auto" />
+    <div className="flex-1 flex flex-col overflow-y-scroll  ">
+      <div className="flex-1 " />
       <ChatWelcome name={name} type={type} />
-      <div className="flex flex-col-reverse ">
+      <div className="flex flex-col-reverse">
         {data?.pages?.map((group, index) => (
           <Fragment key={index}>
             {group?.items.map((message: MessageWithMemberAndProfile) => (

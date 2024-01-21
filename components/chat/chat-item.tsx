@@ -66,7 +66,7 @@ const ChatItem = ({
       return;
     }
 
-    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    router.push(`/servers/${params?.id}/conversations/${member.id}`);
   };
 
   useEffect(() => {
@@ -126,7 +126,9 @@ const ChatItem = ({
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
         <div
-          onClick={onMemberClick}
+          onClick={
+            member.id === currentMember.id ? undefined : onMemberClick
+          }
           className="cursor-pointer hover:drop-shadow-md transition"
         >
           <UserAvatar src={member.profile.imageUrl} />
@@ -135,12 +137,16 @@ const ChatItem = ({
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
               <p
-                onClick={onMemberClick}
-                className="font-semibold text-sm hover:underline cursor-pointer"
+                onClick={
+                  member.id === currentMember.id ? undefined : onMemberClick
+                }
+                className={
+                  cn("font-semibold text-sm " , member.id !== currentMember.id && "hover:underline cursor-pointer")
+                }
               >
                 {member.profile.name}
               </p>
-              <ActionTooltip message={member.role}>
+              <ActionTooltip side="top" message={member.role}>
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>
