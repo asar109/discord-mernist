@@ -38,25 +38,25 @@ const Page = async ({ params }: Props) => {
     params.memberId
   );
 
-
-
-  if(!conversation){
+  if (!conversation) {
     return redirect(`/servers/${params.id}`);
   }
 
-  const {memberOne , memberTwo} = conversation
+  const { memberOne, memberTwo } = conversation;
 
-  const otherProfile = conversation.memberOneId !== currentMember.id ?  memberOne.profile : memberTwo.profile
+  const otherProfile =
+    conversation.memberOneId !== currentMember.id
+      ? memberOne.profile
+      : memberTwo.profile;
 
   return (
-
     <>
-    <ChatHeader 
-    name={otherProfile.name}
-    serverId={params.id}
-    type="conversation"
-    imageUrl={otherProfile.imageUrl}
-    />
+      <ChatHeader
+        name={otherProfile.name}
+        serverId={params.id}
+        type="conversation"
+        imageUrl={otherProfile.imageUrl}
+      />
     </>
   );
 };

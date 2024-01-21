@@ -27,7 +27,7 @@ interface ChatItemProps {
   };
   timestamp: string;
   fileUrl: string | null;
-  deleted: boolean;
+  isDeleted: boolean;
   currentMember: Member;
   isUpdated: boolean;
   socketUrl: string;
@@ -50,7 +50,7 @@ const ChatItem = ({
   member,
   timestamp,
   fileUrl,
-  deleted,
+  isDeleted,
   currentMember,
   isUpdated,
   socketUrl,
@@ -117,8 +117,8 @@ const ChatItem = ({
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
-  const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
-  const canEditMessage = !deleted && isOwner && !fileUrl;
+  const canDeleteMessage = !isDeleted && (isAdmin || isModerator || isOwner);
+  const canEditMessage = !isDeleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
 
@@ -180,12 +180,12 @@ const ChatItem = ({
             <p
               className={cn(
                 "text-sm text-zinc-600 dark:text-zinc-300",
-                deleted &&
+                isDeleted &&
                   "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
               )}
             >
               {content}
-              {isUpdated && !deleted && (
+              {isUpdated && !isDeleted && (
                 <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)
                 </span>
@@ -239,6 +239,7 @@ const ChatItem = ({
           )}
           <ActionTooltip message="Delete">
             <Trash
+            onClick={()=>onOpen('deleteMessage' , {query : {id , socketUrl , socketQuery}}) }
               className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>
