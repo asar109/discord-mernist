@@ -6,7 +6,7 @@ const ChannelIDLayout = ({
     children : React.ReactNode
 }) => {
   return (
-    <div className=''>{children}</div>
+    <div>{children}</div>
   )
 }
 
