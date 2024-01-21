@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import qs from "query-string";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,14 +15,14 @@ import {
 import axios from "axios";
 
 export const DeleteMessageModal = () => {
-  const { isOpen, onClose, type, data ,  } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isModalOpen = isOpen && type === "deleteMessage";
 
   const router = useRouter();
 
-  const { server, channel , query } = data;
+  const { channel, query } = data;
 
   useEffect(() => {}, [isLoading]);
 
