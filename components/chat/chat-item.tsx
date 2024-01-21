@@ -27,7 +27,7 @@ interface ChatItemProps {
   };
   timestamp: string;
   fileUrl: string | null;
-  deleted: boolean;
+  isDeleted: boolean;
   currentMember: Member;
   isUpdated: boolean;
   socketUrl: string;
@@ -50,7 +50,7 @@ const ChatItem = ({
   member,
   timestamp,
   fileUrl,
-  deleted,
+  isDeleted,
   currentMember,
   isUpdated,
   socketUrl,
@@ -66,7 +66,7 @@ const ChatItem = ({
       return;
     }
 
-    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    router.push(`/servers/${params?.id}/conversations/${member.id}`);
   };
 
   useEffect(() => {
@@ -117,8 +117,8 @@ const ChatItem = ({
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
-  const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
-  const canEditMessage = !deleted && isOwner && !fileUrl;
+  const canDeleteMessage = !isDeleted && (isAdmin || isModerator || isOwner);
+  const canEditMessage = !isDeleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
 
@@ -126,7 +126,9 @@ const ChatItem = ({
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
         <div
-          onClick={onMemberClick}
+          onClick={
+            member.id === currentMember.id ? undefined : onMemberClick
+          }
           className="cursor-pointer hover:drop-shadow-md transition"
         >
           <UserAvatar src={member.profile.imageUrl} />
@@ -135,12 +137,16 @@ const ChatItem = ({
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
               <p
-                onClick={onMemberClick}
-                className="font-semibold text-sm hover:underline cursor-pointer"
+                onClick={
+                  member.id === currentMember.id ? undefined : onMemberClick
+                }
+                className={
+                  cn("font-semibold text-sm " , member.id !== currentMember.id && "hover:underline cursor-pointer")
+                }
               >
                 {member.profile.name}
               </p>
-              <ActionTooltip message={member.role}>
+              <ActionTooltip side="top" message={member.role}>
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>
@@ -180,12 +186,12 @@ const ChatItem = ({
             <p
               className={cn(
                 "text-sm text-zinc-600 dark:text-zinc-300",
-                deleted &&
+                isDeleted &&
                   "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
               )}
             >
               {content}
-              {isUpdated && !deleted && (
+              {isUpdated && !isDeleted && (
                 <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)
                 </span>
@@ -239,6 +245,7 @@ const ChatItem = ({
           )}
           <ActionTooltip message="Delete">
             <Trash
+            onClick={()=>onOpen('deleteMessage' , {query : {id , socketUrl , socketQuery}}) }
               className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>

@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { MessageWithMemberAndProfile } from "@/types";
 import ChatItem from "./chat-item";
 import { DATE_FORMAT } from "@/lib/date-format";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 interface ChatMessagesProps {
   name: string;
@@ -33,6 +34,8 @@ const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -41,6 +44,15 @@ const ChatMessages = ({
       paramValue,
       apiUrl,
     });
+
+
+
+    useChatSocket({
+      addKey,
+      updateKey,
+      queryKey,
+    })
+
 
   if (status === "pending") {
     return (
@@ -65,10 +77,10 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col">
-      <div className="flex-1 overflow-y-auto" />
+    <div className="flex-1 flex flex-col overflow-y-scroll  ">
+      <div className="flex-1 " />
       <ChatWelcome name={name} type={type} />
-      <div className="flex flex-col-reverse ">
+      <div className="flex flex-col-reverse">
         {data?.pages?.map((group, index) => (
           <Fragment key={index}>
             {group?.items.map((message: MessageWithMemberAndProfile) => (

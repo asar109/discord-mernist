@@ -55,3 +55,18 @@ html , body , :root{
     --ring: 24 5.7% 82.9%;
   }
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+
+}
+
+::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+}
