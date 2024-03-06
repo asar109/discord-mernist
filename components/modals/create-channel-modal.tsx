@@ -41,7 +41,8 @@ export const CreateChannelModel = () => {
   const { isOpen, onClose, type, data } = useModal();
   const { channelType } = data;
   const router = useRouter();
-  const { id } = useParams();
+  const params = useParams();
+  const id = params ? params.id : null;
   const isModalOpen = isOpen && type === "createChannel";
 
   // Create a form schema
@@ -72,7 +73,7 @@ export const CreateChannelModel = () => {
     } else {
       form.setValue("type", ChannelType.TEXT);
     }
-  }, [channelType]);
+  }, [channelType, form]);
 
   const isLoading = form.formState.isSubmitting;
 
