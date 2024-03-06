@@ -38,7 +38,8 @@ export const UpdateChannelModal = () => {
   const { isOpen, onClose, type, data }  = useModal();
   const { channel, channelType } = data;
   const router = useRouter();
-  const { id } = useParams();
+   const params = useParams();
+  const id = params ? params.id : null;
   const isModalOpen = isOpen && type === "editChannel";
 
   // Create a form schema
